@@ -3,28 +3,28 @@ import FadeIn from './FadeIn';
 const services = [
   {
     num: '01',
-    name: 'Brand Identity',
-    desc: 'Full-spectrum brand visual systems — from logo to complete VIS, crafting cohesive identities that resonate across every touchpoint.',
+    name: '品牌全案',
+    desc: '从 Logo 到完整 VIS 系统，打造统一且有辨识度的品牌视觉体系，让每个触达点都传递一致的品牌力。',
   },
   {
     num: '02',
-    name: 'AIGC Visual',
-    desc: 'AI-powered creative visuals using Midjourney, Stable Diffusion, and ComfyUI workflows to generate striking, original imagery.',
+    name: 'AIGC 视觉',
+    desc: '用 Midjourney、Stable Diffusion、ComfyUI 等 AI 工具生成令人惊艳的原创视觉，效率与质感兼具。',
   },
   {
     num: '03',
-    name: 'Motion Design',
-    desc: 'Dynamic animations and motion graphics via ComfyUI and post-production tools, adding narrative energy to brands and products.',
+    name: '动态设计',
+    desc: '结合 ComfyUI 工作流与后期工具，为品牌和产品注入动态叙事能量，让视觉更有生命力。',
   },
   {
     num: '04',
-    name: 'Production',
-    desc: 'End-to-end packaging and print production — material sourcing, print supervision, and cost optimization for flawless physical deliverables.',
+    name: '落地生产',
+    desc: '包装与印品全流程把控——选材、打样、跟印、成本优化，确保设计方案完美落地。',
   },
   {
     num: '05',
     name: 'Web & UI',
-    desc: 'Clean, modern web and UI design with focus on layout, typography, and conversion-driven user experiences.',
+    desc: '干净、现代的网页与界面设计，注重布局、字体与转化体验，让产品在视觉上先赢一步。',
   },
 ];
 
@@ -39,7 +39,7 @@ export default function ServicesSection() {
         className="text-[#0C0C0C] font-black uppercase text-center mb-16 sm:mb-20 md:mb-28"
         style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
       >
-        Services
+        服务
       </h2>
 
       <div className="max-w-5xl mx-auto">
@@ -54,7 +54,7 @@ export default function ServicesSection() {
               </span>
               <div className="flex flex-col justify-center gap-2 sm:gap-3">
                 <h3
-                  className="font-medium uppercase text-[#0C0C0C]"
+                  className="font-medium text-[#0C0C0C]"
                   style={{ fontSize: 'clamp(1rem, 2.2vw, 2.1rem)' }}
                 >
                   {s.name}
