@@ -15,6 +15,7 @@ export interface Project {
   role: string;
   tools: string[];
   images: string[];
+  accent: string; // accent color for card styling
 }
 
 interface Props {

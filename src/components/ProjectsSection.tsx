@@ -30,6 +30,7 @@ const projects: Project[] = [
       'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055654_911201c5-36d9-4bc6-bac7-331adfce159f.png&w=1280&q=85',
       'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055723_5ceda0b8-d9c2-4665-b2e3-83ba19ba76d1.png&w=1280&q=85',
     ],
+    accent: '#8B5CF6', // 紫 — 科技
   },
   {
     num: '02',
@@ -53,6 +54,7 @@ const projects: Project[] = [
       'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055451_e317bf2d-28d4-48cc-86b0-6f72f25b6327.png&w=1280&q=85',
       'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055344_5eff02e0-87a5-41ce-b64f-eb08da8f33db.png&w=1280&q=85',
     ],
+    accent: '#EC4899', // 粉 — 美妆
   },
   {
     num: '03',
@@ -78,6 +80,7 @@ const projects: Project[] = [
       'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055723_5ceda0b8-d9c2-4665-b2e3-83ba19ba76d1.png&w=1280&q=85',
       'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055753_adc5dcbd-a8e6-49c0-b43a-9b030d835cea.png&w=1280&q=85',
     ],
+    accent: '#F97316', // 橙 — 能量
   },
 ];
 
@@ -105,9 +108,25 @@ export default function ProjectsSection() {
                 className="group rounded-[30px] sm:rounded-[40px] border border-[#D7E2EA]/20
                   bg-[#0C0C0C] overflow-hidden cursor-pointer
                   transition-all duration-300
-                  hover:border-[#D7E2EA]/50 hover:-translate-y-1 hover:shadow-lg hover:shadow-white/5"
+                  hover:-translate-y-1 hover:shadow-lg hover:shadow-white/5"
+                style={{
+                  ['--accent' as string]: proj.accent,
+                  borderColor: 'rgba(215, 226, 234, 0.2)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = proj.accent + '80';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(215, 226, 234, 0.2)';
+                }}
                 onClick={() => setActiveProject(proj)}
               >
+                {/* Accent top bar */}
+                <div
+                  className="h-1 w-full"
+                  style={{ backgroundColor: proj.accent }}
+                />
+
                 <div className="aspect-[3/2] overflow-hidden">
                   <img
                     src={proj.images[0]}
@@ -120,7 +139,10 @@ export default function ProjectsSection() {
 
                 <div className="p-5 sm:p-6 md:p-7">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="font-black text-[#D7E2EA] leading-none text-3xl sm:text-4xl md:text-5xl">
+                    <span
+                      className="font-black leading-none text-3xl sm:text-4xl md:text-5xl transition-colors duration-300"
+                      style={{ color: proj.accent }}
+                    >
                       {proj.num}
                     </span>
                     <span className="text-[#D7E2EA]/40 text-xs sm:text-sm md:text-base tracking-widest uppercase">
@@ -137,8 +159,11 @@ export default function ProjectsSection() {
                   <button
                     onClick={(e) => { e.stopPropagation(); setActiveProject(proj); }}
                     className="mt-5 group/btn inline-flex items-center gap-2
-                      text-[#D7E2EA]/60 text-sm sm:text-base tracking-widest uppercase
-                      transition-colors duration-200 hover:text-[#D7E2EA]"
+                      text-sm sm:text-base tracking-widest uppercase
+                      transition-colors duration-200"
+                    style={{ color: proj.accent + '99' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = proj.accent; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = proj.accent + '99'; }}
                   >
                     <span>查看详情</span>
                     <ExternalLink size={16}
