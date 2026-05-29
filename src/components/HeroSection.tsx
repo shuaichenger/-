@@ -1,197 +1,92 @@
-import { useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
+import FadeIn from './FadeIn';
+
+const navLinks = [
+  { label: '关于', href: '#about' },
+  { label: '作品', href: '#projects' },
+  { label: '服务', href: '#service' },
+  { label: '联系', href: '#contact' },
+];
 
 export default function HeroSection() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const videoWrapRef = useRef<HTMLDivElement>(null);
-
-  /* ── Seamless video loop with fade transitions ── */
-  useEffect(() => {
-    const video = videoRef.current;
-    const wrap = videoWrapRef.current;
-    if (!video || !wrap) return;
-
-    let rafId: number;
-    let fadingIn = false;
-    let fadingOut = false;
-
-    const loop = () => {
-      const ct = video.currentTime;
-      const dur = video.duration || 1;
-
-      if (ct < 0.5 && !fadingIn) {
-        fadingIn = true;
-        fadingOut = false;
-      }
-      if (ct < 0.5) wrap.style.opacity = String(ct / 0.5);
-
-      if (dur - ct < 0.5 && !fadingOut) {
-        fadingOut = true;
-        fadingIn = false;
-      }
-      if (dur - ct < 0.5) wrap.style.opacity = String((dur - ct) / 0.5);
-
-      rafId = requestAnimationFrame(loop);
-    };
-
-    const handleEnded = () => {
-      cancelAnimationFrame(rafId);
-      if (wrap) wrap.style.opacity = '0';
-      setTimeout(() => {
-        if (video) {
-          video.currentTime = 0;
-          video.play().catch(() => {});
-        }
-        if (wrap) wrap.style.opacity = '1';
-        rafId = requestAnimationFrame(loop);
-      }, 100);
-    };
-
-    video.addEventListener('ended', handleEnded);
-    rafId = requestAnimationFrame(loop);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      video.removeEventListener('ended', handleEnded);
-    };
-  }, []);
-
-  const navLinks = [
-    { label: '关于', href: '#about' },
-    { label: '作品', href: '#projects' },
-    { label: '服务', href: '#service' },
-    { label: '联系', href: '#contact' },
-  ];
-
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-[#0C0C0C]">
-      {/* ── Background video ── */}
-      <div
-        ref={videoWrapRef}
-        className="absolute inset-0 z-0"
-        style={{ opacity: 0 }}
-      >
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-        >
-          <source
-            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_171521_25968ba2-b594-4b32-aab7-f6b69398a6fa.mp4"
-            type="video/mp4"
-          />
-        </video>
-      </div>
-
-      {/* ── Gradient overlays ── */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#0C0C0C]/80 via-[#0C0C0C]/30 to-[#0C0C0C]/90 pointer-events-none" />
-
-      {/* ── Grain texture ── */}
-      <div
-        className="absolute inset-0 z-[1] opacity-[0.06] mix-blend-overlay pointer-events-none"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
-        }}
-      />
-
-      {/* ── Navigation ── */}
-      <nav className="relative z-10 px-6 md:px-10 py-5 md:py-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <span
-            className="text-2xl md:text-3xl tracking-tight"
-            style={{ fontFamily: "'Instrument Serif', serif", color: '#E1E0CC' }}
-          >
-            成城野
-          </span>
-
-          <div className="flex items-center gap-6 md:gap-8 lg:gap-10">
+    <section className="relative h-screen flex flex-col overflow-x-clip bg-[#0C0C0C]">
+      {/* ── Navbar ── */}
+      <FadeIn delay={0} y={-20} as="div">
+        <div className="flex items-center justify-between px-6 md:px-10 pt-6 md:pt-8 text-[#D7E2EA] font-medium uppercase tracking-wider text-sm md:text-lg lg:text-[1.4rem]">
+          <span className="opacity-70 select-none">成城野</span>
+          <div className="flex items-center gap-8 md:gap-12">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="hidden sm:inline-block text-xs md:text-sm uppercase tracking-wider
-                  transition-all duration-200"
-                style={{ color: 'rgba(225, 224, 204, 0.5)' }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = '#E1E0CC'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(225, 224, 204, 0.5)'; }}
+                className="transition-opacity duration-200 hover:opacity-70"
               >
                 {link.label}
               </a>
             ))}
-            <a
-              href="#contact"
-              className="rounded-full px-5 py-2 md:px-6 md:py-2.5
-                text-xs md:text-sm font-medium tracking-wider
-                transition-all duration-300 hover:scale-[1.03] whitespace-nowrap"
-              style={{ backgroundColor: '#E1E0CC', color: '#0C0C0C' }}
+          </div>
+          <span className="w-0" />
+        </div>
+      </FadeIn>
+
+      {/* ── Gradient orbs (subtle) ── */}
+      <div className="absolute top-[15%] -left-[10%] w-[45%] h-[35%] rounded-full
+        bg-[#8B5CF6]/5 blur-[120px] animate-pulse pointer-events-none"
+        style={{ animationDuration: '6s', animationTimingFunction: 'ease-in-out' }}
+      />
+      <div className="absolute top-[40%] -right-[8%] w-[35%] h-[40%] rounded-full
+        bg-[#EC4899]/4 blur-[100px] animate-pulse pointer-events-none"
+        style={{ animationDuration: '8s', animationTimingFunction: 'ease-in-out' }}
+      />
+
+      {/* ── Main content area ── */}
+      <div className="flex-1 flex flex-col justify-center relative z-10 overflow-hidden">
+        {/* Heading */}
+        <FadeIn delay={0.15} y={40}>
+          <div className="overflow-hidden w-full">
+            <h1
+              className="hero-heading font-black uppercase leading-none tracking-tight whitespace-nowrap text-left px-6 md:px-10"
+              style={{
+                fontSize: 'clamp(3.5rem, 14vw, 17.5vw)',
+                marginTop: 'clamp(0.5rem, 4vw, 2rem)',
+              }}
             >
-              开始合作
-            </a>
+              成城野
+            </h1>
           </div>
-        </div>
-      </nav>
+        </FadeIn>
+      </div>
 
-      {/* ── Hero content (bottom-aligned) ── */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 px-6 md:px-10 pb-6 md:pb-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-12 gap-4 md:gap-6">
-            {/* Left 8 cols — main heading */}
-            <div className="col-span-12 md:col-span-8">
-              <h1
-                className="animate-fade-rise"
-                style={{
-                  fontFamily: "'Instrument Serif', serif",
-                  fontSize: 'clamp(3rem, 20vw, 14vw)',
-                  lineHeight: 0.85,
-                  letterSpacing: '-0.05em',
-                  color: '#E1E0CC',
-                }}
-              >
-                成城野
-              </h1>
-            </div>
+      {/* ── Bottom bar ── */}
+      <div className="relative z-10 flex justify-between items-end pb-7 sm:pb-8 md:pb-10 px-6 md:px-10">
+        {/* Left: description */}
+        <FadeIn delay={0.35} y={20} as="div">
+          <p
+            className="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug"
+            style={{
+              fontSize: 'clamp(0.65rem, 1.4vw, 1.5rem)',
+              maxWidth: 'clamp(120px, 18vw, 260px)',
+            }}
+          >
+            AIGC 设计师 · 探索视觉的无限可能
+          </p>
+        </FadeIn>
 
-            {/* Right 4 cols — description + CTA */}
-            <div className="col-span-12 md:col-span-4 flex flex-col justify-end gap-3 md:gap-4 md:pb-[0.6em]">
-              {/* Pre-heading */}
-              <span
-                className="animate-fade-rise text-[10px] md:text-xs uppercase tracking-[0.25em] font-medium"
-                style={{ color: 'rgba(225, 224, 204, 0.35)' }}
-              >
-                AIGC 视觉设计师
-              </span>
-
-              <p
-                className="animate-fade-rise-delay leading-[1.4] text-xs sm:text-sm md:text-sm"
-                style={{ color: 'rgba(225, 224, 204, 0.55)' }}
-              >
-                专注品牌视觉、动态设计与数字创意。
-                用 AI 工作流让每一个项目更快、更准、更出彩。
-              </p>
-
-              <div className="animate-fade-rise-delay-2">
-                <a
-                  href="#projects"
-                  className="group inline-flex items-center gap-2
-                    rounded-full px-5 py-2 sm:px-6 sm:py-2.5
-                    text-xs sm:text-sm font-medium
-                    transition-all duration-300 hover:gap-3 hover:scale-[1.03]
-                    bg-[#DEDBC8] text-black"
-                >
-                  <span>查看作品</span>
-                  <span className="bg-black rounded-full w-6 h-6 sm:w-8 sm:h-8
-                    flex items-center justify-center
-                    transition-transform duration-300 group-hover:scale-110"
-                  >
-                    <ArrowRight size={14} className="text-[#DEDBC8]" strokeWidth={2} />
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Right: CTA */}
+        <FadeIn delay={0.5} y={20} as="div">
+          <a
+            href="#projects"
+            className="group inline-flex items-center gap-2
+              rounded-full px-6 py-3 sm:px-8 sm:py-3.5
+              text-xs sm:text-sm font-medium uppercase tracking-wider
+              transition-all duration-300 hover:gap-3 hover:scale-[1.02]
+              bg-white text-[#0C0C0C]"
+          >
+            <span>查看作品</span>
+            <ArrowRight size={16} strokeWidth={2} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+          </a>
+        </FadeIn>
       </div>
     </section>
   );
