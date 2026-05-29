@@ -60,7 +60,7 @@ export default function HeroSection() {
         </FadeIn>
 
         <FadeIn delay={0.5} y={20}>
-          <a href="#contact">
+          <a href="#projects">
             <ContactButton />
           </a>
         </FadeIn>
