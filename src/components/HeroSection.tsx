@@ -28,24 +28,13 @@ export default function HeroSection() {
       </FadeIn>
 
       {/* Hero Heading */}
-      <div className="overflow-hidden flex-1 flex items-center justify-center relative">
+      <div className="overflow-hidden">
         <FadeIn delay={0.15} y={40}>
-          <div className="relative inline-block">
-            {/* Decorative line accents */}
-            <span className="absolute -top-8 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#D7E2EA]/30 to-transparent" />
-            <h1 className="
-              hero-heading font-black leading-none whitespace-nowrap w-full
-              text-[10vw] sm:text-[11vw] md:text-[12vw] lg:text-[13vw]
-              tracking-[0.02em]
-            ">
-              你好 我是昭成
-            </h1>
-            <span className="absolute -bottom-6 left-1/2 -translate-x-1/2">
-              <span className="inline-block w-1 h-1 rounded-full bg-[#D7E2EA]/40 mx-1" />
-              <span className="inline-block w-2 h-2 rounded-full bg-[#D7E2EA]/60 mx-1" />
-              <span className="inline-block w-1 h-1 rounded-full bg-[#D7E2EA]/40 mx-1" />
-            </span>
-          </div>
+          <h1 className="hero-heading font-black leading-none whitespace-nowrap w-full
+            text-[10vw] sm:text-[11vw] md:text-[12vw] lg:text-[13vw]
+            tracking-[0.02em] mt-6 sm:mt-4 md:-mt-5">
+            你好 我是昭成
+          </h1>
         </FadeIn>
       </div>
 
