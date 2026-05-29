@@ -7,13 +7,13 @@ export default function AboutSection() {
       id="about"
       className="relative min-h-screen flex flex-col items-center justify-center
         gap-10 sm:gap-14 md:gap-16
-        px-5 sm:px-8 md:px-10 py-20 bg-[#0C0C0C] overflow-hidden"
+        px-5 sm:px-8 md:px-10 py-20 bg-[#f5f5f0] overflow-hidden"
     >
 
       {/* Heading */}
       <FadeIn delay={0} y={40}>
         <h2
-          className="hero-heading font-black uppercase leading-none tracking-tight text-center"
+          className="font-black uppercase leading-none tracking-tight text-center text-[#0C0C0C]"
           style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
         >
           关于我
@@ -24,7 +24,7 @@ export default function AboutSection() {
       <div className="text-center max-w-[600px] relative z-10">
         <FadeIn delay={0.15} y={20}>
           <p
-            className="text-[#D7E2EA] font-light leading-relaxed"
+            className="text-[#0C0C0C]/70 font-light leading-relaxed"
             style={{ fontSize: 'clamp(1rem, 2vw, 1.35rem)' }}
           >
             品牌设计师出身，用 AIGC 拓宽视觉的边界。从品牌策略到动态设计，
@@ -42,8 +42,8 @@ export default function AboutSection() {
               { num: '3年', label: '设计经验' },
             ].map((s) => (
               <div key={s.label} className="text-center">
-                <p className="text-white font-black text-lg sm:text-xl md:text-2xl">{s.num}</p>
-                <p className="text-[#D7E2EA]/30 text-xs sm:text-sm tracking-widest uppercase mt-1">{s.label}</p>
+                <p className="text-[#0C0C0C] font-black text-lg sm:text-xl md:text-2xl">{s.num}</p>
+                <p className="text-[#0C0C0C]/30 text-xs sm:text-sm tracking-widest uppercase mt-1">{s.label}</p>
               </div>
             ))}
           </div>
