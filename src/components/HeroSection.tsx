@@ -133,72 +133,64 @@ export default function HeroSection() {
         </div>
       </nav>
 
-      {/* ── Hero content ── */}
-      <div
-        className="relative z-10 flex flex-col items-center justify-center text-center px-6"
-        style={{ paddingTop: 'calc(8rem - 75px)', paddingBottom: '10rem' }}
-      >
-        {/* Pre-heading label */}
-        <span
-          className="animate-fade-rise inline-block mb-4 md:mb-6 text-[10px] md:text-xs
-            uppercase tracking-[0.25em] font-medium"
-          style={{ color: 'rgba(225, 224, 204, 0.4)' }}
-        >
-          AIGC 视觉设计师
-        </span>
+      {/* ── Hero content (bottom-aligned) ── */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 px-6 md:px-10 pb-6 md:pb-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-12 gap-4 md:gap-6">
+            {/* Left 8 cols — main heading */}
+            <div className="col-span-12 md:col-span-8">
+              <h1
+                className="animate-fade-rise"
+                style={{
+                  fontFamily: "'Instrument Serif', serif",
+                  fontSize: 'clamp(3rem, 20vw, 14vw)',
+                  lineHeight: 0.85,
+                  letterSpacing: '-0.05em',
+                  color: '#E1E0CC',
+                }}
+              >
+                成城野
+              </h1>
+            </div>
 
-        {/* Headline — Name as hero */}
-        <h1
-          className="animate-fade-rise max-w-6xl"
-          style={{
-            fontFamily: "'Instrument Serif', serif",
-            fontSize: 'clamp(3rem, 12vw, 7rem)',
-            lineHeight: 0.9,
-            letterSpacing: '-0.04em',
-            color: '#E1E0CC',
-          }}
-        >
-          成城野
-        </h1>
+            {/* Right 4 cols — description + CTA */}
+            <div className="col-span-12 md:col-span-4 flex flex-col justify-end gap-3 md:gap-4 md:pb-[0.6em]">
+              {/* Pre-heading */}
+              <span
+                className="animate-fade-rise text-[10px] md:text-xs uppercase tracking-[0.25em] font-medium"
+                style={{ color: 'rgba(225, 224, 204, 0.35)' }}
+              >
+                AIGC 视觉设计师
+              </span>
 
-        {/* Sub-headline */}
-        <p
-          className="animate-fade-rise-delay mt-2 md:mt-3 max-w-2xl"
-          style={{
-            fontFamily: "'Instrument Serif', serif",
-            fontSize: 'clamp(1.1rem, 3vw, 1.8rem)',
-            lineHeight: 1.1,
-            letterSpacing: '-0.02em',
-            color: 'rgba(225, 224, 204, 0.55)',
-          }}
-        >
-          用 AI 拓宽视觉边界
-        </p>
+              <p
+                className="animate-fade-rise-delay leading-[1.4] text-xs sm:text-sm md:text-sm"
+                style={{ color: 'rgba(225, 224, 204, 0.55)' }}
+              >
+                专注品牌视觉、动态设计与数字创意。
+                用 AI 工作流让每一个项目更快、更准、更出彩。
+              </p>
 
-        {/* Description */}
-        <p
-          className="animate-fade-rise-delay max-w-lg mt-6 md:mt-8 leading-relaxed text-sm md:text-base"
-          style={{ color: 'rgba(225, 224, 204, 0.45)' }}
-        >
-          专注品牌视觉、动态设计与数字创意。
-          <br />
-          让每一次交付都超越预期。
-        </p>
-
-        {/* CTA */}
-        <div className="animate-fade-rise-delay-2 mt-8 md:mt-10">
-          <a
-            href="#projects"
-            className="group inline-flex items-center gap-3
-              rounded-full px-10 py-4 md:px-14 md:py-5 text-sm md:text-base font-medium
-              transition-all duration-300 hover:scale-[1.03]"
-            style={{ backgroundColor: '#E1E0CC', color: '#0C0C0C' }}
-          >
-            <span>查看作品</span>
-            <ArrowRight size={18} strokeWidth={2}
-              className="transition-transform duration-300 group-hover:translate-x-1"
-            />
-          </a>
+              <div className="animate-fade-rise-delay-2">
+                <a
+                  href="#projects"
+                  className="group inline-flex items-center gap-2
+                    rounded-full px-5 py-2 sm:px-6 sm:py-2.5
+                    text-xs sm:text-sm font-medium
+                    transition-all duration-300 hover:gap-3 hover:scale-[1.03]
+                    bg-[#DEDBC8] text-black"
+                >
+                  <span>查看作品</span>
+                  <span className="bg-black rounded-full w-6 h-6 sm:w-8 sm:h-8
+                    flex items-center justify-center
+                    transition-transform duration-300 group-hover:scale-110"
+                  >
+                    <ArrowRight size={14} className="text-[#DEDBC8]" strokeWidth={2} />
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
