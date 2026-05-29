@@ -166,7 +166,7 @@ export default function HeroSection() {
           px-6 md:px-10 pb-6 sm:pb-8 md:pb-10"
         >
           <div className="text-center">
-            <p className="text-white font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl">5年</p>
+            <p className="text-white font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl">3年</p>
             <p className="text-[#D7E2EA]/30 text-xs sm:text-sm tracking-widest uppercase mt-1">经验</p>
           </div>
           <div className="w-px bg-white/10" />

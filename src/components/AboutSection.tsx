@@ -91,7 +91,7 @@ export default function AboutSection() {
             {[
               { num: '50+', label: '品牌项目' },
               { num: '30+', label: '满意客户' },
-              { num: '5年', label: '设计经验' },
+              { num: '3年', label: '设计经验' },
             ].map((s) => (
               <div key={s.label} className="text-center">
                 <p className="text-white font-black text-lg sm:text-xl md:text-2xl">{s.num}</p>
