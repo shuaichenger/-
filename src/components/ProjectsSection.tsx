@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import ProjectModal from './ProjectModal';
+import FadeIn from './FadeIn';
 
 const projects = [
   {
@@ -43,113 +44,80 @@ const projects = [
 ];
 
 export default function ProjectsSection() {
-  const containerRef = useRef<HTMLElement>(null);
   const [activeProject, setActiveProject] = useState<typeof projects[0] | null>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
 
   return (
     <div className="relative">
-      <section
-      id="projects"
-      ref={containerRef}
-      className="bg-[#0C0C0C] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px]
-        -mt-10 sm:-mt-12 md:-mt-14 z-10 relative
-        px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-32"
-    >
-      <h2
-        className="hero-heading font-black uppercase text-center mb-16 sm:mb-20 md:mb-28"
-        style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
+      <section id="projects"
+        className="bg-[#0C0C0C] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px]
+          -mt-10 sm:-mt-12 md:-mt-14 z-10 relative
+          px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-32"
       >
-        作品
-      </h2>
+        <h2
+          className="hero-heading font-black uppercase text-center mb-16 sm:mb-20 md:mb-28"
+          style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
+        >
+          作品
+        </h2>
 
-      {projects.map((proj, idx) => {
-        const total = projects.length;
-        const targetScale = 1 - (total - 1 - idx) * 0.03;
+        {/* 3-column grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-7xl mx-auto">
+          {projects.map((proj, idx) => (
+            <FadeIn key={proj.num} delay={idx * 0.1} y={40}>
+              <motion.div
+                className="group rounded-[30px] sm:rounded-[40px] border border-[#D7E2EA]/20
+                  bg-[#0C0C0C] overflow-hidden cursor-pointer
+                  transition-all duration-300
+                  hover:border-[#D7E2EA]/50 hover:-translate-y-1 hover:shadow-lg hover:shadow-white/5"
+                onClick={() => setActiveProject(proj)}
+              >
+                {/* Thumbnail */}
+                <div className="aspect-[4/3] overflow-hidden">
+                  <img
+                    src={proj.images[0]}
+                    alt={proj.name}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-500
+                      group-hover:scale-105"
+                  />
+                </div>
 
-        const scale = useTransform(scrollYProgress, [idx * 0.33, 1], [1, targetScale]);
-
-        return (
-          <motion.div
-            key={proj.num}
-            className="sticky rounded-[40px] sm:rounded-[50px] md:rounded-[60px]
-              border-2 border-[#D7E2EA] bg-[#0C0C0C]
-              p-4 sm:p-6 md:p-8 mb-8"
-            style={{
-              top: `${idx * 28 + 96}px`,
-              scale,
-              transformOrigin: 'top center',
-            }}
-          >
-            {/* Top row */}
-            <div className="flex items-center justify-between mb-6 sm:mb-8">
-              <div className="flex items-center gap-4 sm:gap-6">
-                <span
-                  className="font-black text-[#D7E2EA] leading-none"
-                  style={{ fontSize: 'clamp(3rem, 10vw, 140px)' }}
-                >
-                  {proj.num}
-                </span>
-                <div>
-                  <span className="text-[#D7E2EA]/40 text-sm sm:text-base tracking-widest">
-                    {proj.category === 'Client' ? '客户项目' : '个人项目'}
-                  </span>
-                  <h3 className="text-[#D7E2EA] font-medium uppercase text-xl sm:text-2xl md:text-3xl">
+                {/* Info */}
+                <div className="p-4 sm:p-5">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="font-black text-[#D7E2EA] leading-none text-2xl sm:text-3xl">
+                      {proj.num}
+                    </span>
+                    <span className="text-[#D7E2EA]/40 text-xs sm:text-sm tracking-widest uppercase">
+                      {proj.category === 'Client' ? '客户项目' : '个人项目'}
+                    </span>
+                  </div>
+                  <h3 className="text-[#D7E2EA] font-medium uppercase text-lg sm:text-xl">
                     {proj.name}
                   </h3>
+                  <p className="text-[#D7E2EA]/50 text-xs sm:text-sm mt-2 leading-relaxed line-clamp-2">
+                    {proj.description}
+                  </p>
+
+                  {/* Button */}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setActiveProject(proj); }}
+                    className="mt-4 group/btn inline-flex items-center gap-2
+                      text-[#D7E2EA]/60 text-xs sm:text-sm tracking-widest uppercase
+                      transition-colors duration-200 hover:text-[#D7E2EA]"
+                  >
+                    <span>查看详情</span>
+                    <ExternalLink size={14}
+                      className="transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
+                    />
+                  </button>
                 </div>
-              </div>
-              <button
-                  onClick={() => setActiveProject(proj)}
-                  className="group rounded-full border-2 border-[#D7E2EA] px-8 py-3 sm:px-10 sm:py-3.5
-                    text-[#D7E2EA] font-medium uppercase tracking-widest
-                    text-sm sm:text-base
-                    transition-all duration-200
-                    hover:bg-[#D7E2EA] hover:text-[#0C0C0C]
-                    flex items-center gap-2"
-                >
-                  <span>查看详情</span>
-                  <ExternalLink size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </button>
-            </div>
+              </motion.div>
+            </FadeIn>
+          ))}
+        </div>
+      </section>
 
-            {/* Bottom row - image grid */}
-            <div className="flex gap-3 sm:gap-4">
-              {/* Left column */}
-              <div className="w-[40%] flex flex-col gap-3 sm:gap-4">
-                <img
-                  src={proj.images[0]}
-                  alt={`${proj.name} 1`}
-                  loading="lazy"
-                  className="w-full rounded-[40px] sm:rounded-[50px] md:rounded-[60px] object-cover"
-                  style={{ height: 'clamp(130px, 16vw, 230px)' }}
-                />
-                <img
-                  src={proj.images[1]}
-                  alt={`${proj.name} 2`}
-                  loading="lazy"
-                  className="w-full rounded-[40px] sm:rounded-[50px] md:rounded-[60px] object-cover"
-                  style={{ height: 'clamp(160px, 22vw, 340px)' }}
-                />
-              </div>
-
-              {/* Right column */}
-              <div className="w-[60%]">
-                <img
-                  src={proj.images[2]}
-                  alt={`${proj.name} 3`}
-                  loading="lazy"
-                  className="w-full h-full rounded-[40px] sm:rounded-[50px] md:rounded-[60px] object-cover"
-                />
-              </div>
-            </div>
-          </motion.div>
-        );
-      })}
-    </section>
       <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
     </div>
   );
