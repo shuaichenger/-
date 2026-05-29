@@ -1,239 +1,196 @@
-import { useEffect, useState, useRef } from 'react';
-import FadeIn from './FadeIn';
+import { useEffect, useRef } from 'react';
+import { ArrowRight } from 'lucide-react';
 
-/* ───────── Count-up hook ───────── */
-function useCountUp(target: number, play: boolean) {
-  const [value, setValue] = useState(0);
-  const frameRef = useRef<number>(0);
+export default function HeroSection() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoWrapRef = useRef<HTMLDivElement>(null);
 
+  /* ── Seamless video loop with fade transitions ── */
   useEffect(() => {
-    if (!play) return;
-    setValue(0);
-    const duration = 1200;
-    const start = performance.now();
+    const video = videoRef.current;
+    const wrap = videoWrapRef.current;
+    if (!video || !wrap) return;
 
-    const step = (now: number) => {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      // ease-out cubic
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(Math.round(eased * target));
-      if (progress < 1) frameRef.current = requestAnimationFrame(step);
+    let rafId: number;
+    let fadingIn = false;
+    let fadingOut = false;
+
+    const loop = () => {
+      const ct = video.currentTime;
+      const dur = video.duration || 1;
+
+      // Fade in over the first 0.5s
+      if (ct < 0.5 && !fadingIn) {
+        fadingIn = true;
+        fadingOut = false;
+      }
+      if (ct < 0.5) {
+        wrap.style.opacity = String(ct / 0.5);
+      }
+
+      // Fade out over the last 0.5s
+      if (dur - ct < 0.5 && !fadingOut) {
+        fadingOut = true;
+        fadingIn = false;
+      }
+      if (dur - ct < 0.5) {
+        wrap.style.opacity = String((dur - ct) / 0.5);
+      }
+
+      rafId = requestAnimationFrame(loop);
     };
 
-    frameRef.current = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(frameRef.current);
-  }, [play, target]);
+    const handleEnded = () => {
+      cancelAnimationFrame(rafId);
+      if (wrap) wrap.style.opacity = '0';
+      setTimeout(() => {
+        if (video) {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+        }
+        if (wrap) wrap.style.opacity = '1';
+        rafId = requestAnimationFrame(loop);
+      }, 100);
+    };
 
-  return value;
-}
+    video.addEventListener('ended', handleEnded);
+    rafId = requestAnimationFrame(loop);
 
-function StatItem({ num, label }: { num: number; label: string; suffix?: string }) {
-  const [viewed, setViewed] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const count = useCountUp(num, viewed);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setViewed(true); observer.disconnect(); } },
-      { threshold: 0.5 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      cancelAnimationFrame(rafId);
+      video.removeEventListener('ended', handleEnded);
+    };
   }, []);
 
+  const navLinks = [
+    { label: '关于', href: '#about' },
+    { label: '作品', href: '#projects' },
+    { label: '服务', href: '#service' },
+    { label: '联系', href: '#contact' },
+  ];
+
   return (
-    <div ref={ref} className="text-center">
-      <p className="text-white font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl tabular-nums">
-        {count}{num >= 100 ? '+' : '年'}
-      </p>
-      <p className="text-[#D7E2EA]/30 text-xs sm:text-sm tracking-widest uppercase mt-1">{label}</p>
-    </div>
-  );
-}
-
-/* ───────── Data ───────── */
-const navLinks = [
-  { label: '关于', href: '#about' },
-  { label: '作品', href: '#projects' },
-  { label: '服务', href: '#service' },
-  { label: '联系', href: '#contact' },
-];
-
-const nameChars = [
-  { char: '成', color: '#8B5CF6' },
-  { char: '城', color: '#EC4899' },
-  { char: '野', color: '#F97316' },
-];
-
-/* ───────── Component ───────── */
-export default function HeroSection() {
-  return (
-    <section className="relative h-screen flex flex-col overflow-hidden bg-[#0C0C0C]">
-      {/* ── Full-bleed blurred background ── */}
-      <div className="absolute inset-0 pointer-events-none">
-        <img
-          src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055344_5eff02e0-87a5-41ce-b64f-eb08da8f33db.png&w=1280&q=85"
-          alt=""
-          className="w-full h-full object-cover scale-110 blur-2xl opacity-30"
-        />
-        {/* Dark overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0C0C0C]/60 via-[#0C0C0C]/40 to-[#0C0C0C]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#8B5CF6]/5 to-[#EC4899]/5" />
+    <section className="relative min-h-screen w-full overflow-hidden bg-[#0C0C0C]">
+      {/* ── Background video layer ── */}
+      <div
+        ref={videoWrapRef}
+        className="absolute inset-0 z-0"
+        style={{ opacity: 0 }}
+      >
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          style={{ objectPosition: 'center 30%' }}
+        >
+          <source
+            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_083109_283f3553-e28f-428b-a723-d639c617eb2b.mp4"
+            type="video/mp4"
+          />
+        </video>
       </div>
 
-      {/* ── Gradient orbs (slow float) ── */}
-      <div className="absolute top-[15%] -left-[10%] w-[45%] h-[35%] rounded-full
-        bg-[#8B5CF6]/10 blur-[120px] animate-pulse pointer-events-none"
-        style={{ animationDuration: '6s', animationTimingFunction: 'ease-in-out' }}
-      />
-      <div className="absolute top-[40%] -right-[8%] w-[35%] h-[40%] rounded-full
-        bg-[#EC4899]/8 blur-[100px] animate-pulse pointer-events-none"
-        style={{ animationDuration: '8s', animationTimingFunction: 'ease-in-out' }}
+      {/* ── Gradient overlays on video ── */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#0C0C0C] via-transparent to-[#0C0C0C] pointer-events-none" />
+
+      {/* ── Grain texture ── */}
+      <div
+        className="absolute inset-0 z-[1] opacity-[0.08] mix-blend-overlay pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+        }}
       />
 
-      {/* ── Nav ── */}
-      <FadeIn delay={0} y={-20}>
-        <nav className="relative z-20 flex items-center justify-between
-          px-6 md:px-10 pt-6 md:pt-8 text-[#D7E2EA] font-medium uppercase tracking-wider
-          text-sm md:text-lg lg:text-[1.4rem]"
-        >
-          <span className="opacity-70 select-none text-[#D7E2EA]/80">成城野</span>
-          <div className="flex items-center gap-8 md:gap-12">
+      {/* ── Navigation bar (z-10) ── */}
+      <nav className="relative z-10 px-6 md:px-10 py-5 md:py-6">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          {/* Logo */}
+          <span
+            className="text-2xl md:text-3xl tracking-tight"
+            style={{ fontFamily: "'Instrument Serif', serif", color: '#E1E0CC' }}
+          >
+            成城野<sup className="text-[0.5em] align-super ml-0.5" style={{ color: '#E1E0CC' }}>®</sup>
+          </span>
+
+          {/* Nav links + CTA */}
+          <div className="flex items-center gap-6 md:gap-8 lg:gap-10">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="transition-opacity duration-200 hover:opacity-70"
+                className="hidden sm:inline-block text-xs md:text-sm uppercase tracking-wider
+                  transition-all duration-200 hover:opacity-100"
+                style={{ color: 'rgba(225, 224, 204, 0.55)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = '#E1E0CC'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(225, 224, 204, 0.55)'; }}
               >
                 {link.label}
               </a>
             ))}
+            <a
+              href="#contact"
+              className="rounded-full px-5 py-2 md:px-6 md:py-2.5
+                text-xs md:text-sm font-medium tracking-wider
+                transition-all duration-300 hover:scale-[1.03]"
+              style={{
+                backgroundColor: '#E1E0CC',
+                color: '#0C0C0C',
+              }}
+            >
+              开始合作
+            </a>
           </div>
-          <span className="w-0 md:w-auto" />
-        </nav>
-      </FadeIn>
+        </div>
+      </nav>
 
-      {/* ── Main content ── */}
-      <div className="relative z-10 flex-1 flex items-center justify-center px-6 md:px-10">
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-16 w-full max-w-6xl">
-          {/* Portrait + floating tags */}
-          <div className="relative shrink-0">
-            <FadeIn delay={0.6} y={30}>
-              <div className="w-[200px] sm:w-[250px] md:w-[300px] lg:w-[340px]">
-                {/* Glow ring */}
-                <div className="absolute inset-0 rounded-[30px] md:rounded-[40px]
-                  bg-gradient-to-br from-[#8B5CF6]/20 to-[#EC4899]/20 blur-xl" />
-                <img
-                  src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055654_911201c5-36d9-4bc6-bac7-331adfce159f.png&w=1280&q=85"
-                  alt="成城野"
-                  className="relative w-full h-auto object-cover rounded-[30px] md:rounded-[40px]
-                    border border-white/10 shadow-2xl"
-                />
-              </div>
-            </FadeIn>
+      {/* ── Hero content (z-10) ── */}
+      <div
+        className="relative z-10 flex flex-col items-center justify-center text-center px-6"
+        style={{ paddingTop: 'calc(8rem - 75px)', paddingBottom: '10rem' }}
+      >
+        {/* Headline */}
+        <h1
+          className="animate-fade-rise max-w-6xl"
+          style={{
+            fontFamily: "'Instrument Serif', serif",
+            fontSize: 'clamp(2.5rem, 8vw, 5.5rem)',
+            lineHeight: 0.95,
+            letterSpacing: '-2.46px',
+            color: '#E1E0CC',
+          }}
+        >
+          超越杂音，
+          <em className="not-italic" style={{ color: 'rgba(225, 224, 204, 0.5)' }}>构建永恒。</em>
+        </h1>
 
-          </div>
+        {/* Description */}
+        <p
+          className="animate-fade-rise-delay max-w-xl mt-6 md:mt-8 leading-relaxed text-sm md:text-base lg:text-lg"
+          style={{ color: 'rgba(225, 224, 204, 0.55)' }}
+        >
+          AIGC 设计师。用 AI 拓宽视觉边界，在数字与品牌之间找到最优解。
+          每一次点击、每一个像素，都是对「更好」的执念。
+        </p>
 
-          {/* Text block */}
-          <div className="text-center lg:text-left">
-            {/* Pre-heading */}
-            <FadeIn delay={0.2} y={20}>
-              <span className="inline-block px-4 py-1.5 rounded-full
-                bg-white/5 border border-white/10 text-[#D7E2EA]/50
-                text-xs sm:text-sm tracking-[0.2em] uppercase mb-4"
-              >
-                高级视觉设计师
-              </span>
-            </FadeIn>
-
-            {/* Split characters */}
-            <FadeIn delay={0.3} y={25}>
-              <h1 className="mb-1">
-                <span className="block text-[#D7E2EA]/60 font-light tracking-wide
-                  text-lg sm:text-xl md:text-2xl lg:text-3xl leading-relaxed"
-                >
-                  你好，我是
-                </span>
-                <span className="flex justify-center lg:justify-start gap-1 sm:gap-2
-                  font-black leading-none tracking-tight
-                  text-[16vw] sm:text-[15vw] md:text-[14vw] lg:text-[12vw] xl:text-[10vw]"
-                >
-                  {nameChars.map((n) => (
-                    <span
-                      key={n.char}
-                      className="inline-block transition-transform duration-300 hover:scale-105"
-                      style={{ color: n.color, textShadow: `0 0 30px ${n.color}40` }}
-                    >
-                      {n.char}
-                    </span>
-                  ))}
-                </span>
-              </h1>
-            </FadeIn>
-
-            {/* Description */}
-            <FadeIn delay={0.45} y={20}>
-              <p className="text-[#D7E2EA]/50 font-light max-w-md mx-auto lg:mx-0
-                text-sm sm:text-base leading-relaxed mt-2"
-              >
-                AIGC 设计师，用 AI 拓宽视觉边界
-              </p>
-            </FadeIn>
-
-            {/* CTA */}
-            <FadeIn delay={0.55} y={20}>
-              <div className="flex flex-wrap justify-center lg:justify-start gap-3 mt-6">
-                <a
-                  href="#projects"
-                  className="group inline-flex items-center gap-2
-                    rounded-full bg-white text-[#0C0C0C]
-                    px-6 py-3 sm:px-8 sm:py-3.5
-                    text-sm sm:text-base font-medium tracking-wider
-                    transition-all duration-300
-                    hover:bg-white/90 hover:gap-3"
-                >
-                  <span>查看作品</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    className="transition-transform duration-300 group-hover:translate-x-0.5"
-                  >
-                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor"
-                      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </a>
-                <a
-                  href="#contact"
-                  className="group inline-flex items-center gap-2
-                    rounded-full border border-[#D7E2EA]/30 text-[#D7E2EA]
-                    px-6 py-3 sm:px-8 sm:py-3.5
-                    text-sm sm:text-base font-medium tracking-wider
-                    transition-all duration-300
-                    hover:border-[#D7E2EA] hover:bg-white/5"
-                >
-                  开始合作
-                </a>
-              </div>
-            </FadeIn>
-          </div>
+        {/* CTA */}
+        <div className="animate-fade-rise-delay-2 mt-10 md:mt-12">
+          <a
+            href="#projects"
+            className="group inline-flex items-center gap-3
+              rounded-full px-10 py-4 md:px-14 md:py-5 text-sm md:text-base font-medium
+              transition-all duration-300 hover:scale-[1.03]"
+            style={{
+              backgroundColor: '#E1E0CC',
+              color: '#0C0C0C',
+            }}
+          >
+            <span>查看作品</span>
+            <ArrowRight size={18} strokeWidth={2} className="transition-transform duration-300 group-hover:translate-x-1" />
+          </a>
         </div>
       </div>
-
-      {/* ── Stats bar (count-up) ── */}
-      <FadeIn delay={0.6} y={20}>
-        <div className="relative z-10 flex justify-center gap-8 sm:gap-12 md:gap-16 lg:gap-24
-          px-6 md:px-10 pb-6 sm:pb-8 md:pb-10"
-        >
-          <div className="w-px bg-white/10 self-stretch" />
-          <StatItem num={3} label="经验" />
-          <div className="w-px bg-white/10 self-stretch" />
-          <StatItem num={100} label="项目" />
-          <div className="w-px bg-white/10 self-stretch" />
-          <StatItem num={30} label="客户" />
-          <div className="w-px bg-white/10 self-stretch" />
-        </div>
-      </FadeIn>
     </section>
   );
 }
