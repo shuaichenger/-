@@ -10,8 +10,8 @@ export default function App() {
       <HeroSection />
       <MarqueeSection />
       <AboutSection />
-      <ServicesSection />
       <ProjectsSection />
+      <ServicesSection />
       <footer id="contact" className="bg-[#0C0C0C] py-16 sm:py-20 text-center">
         <p
           className="hero-heading font-black uppercase mb-4"
