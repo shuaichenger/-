@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import FadeIn from './FadeIn';
+import Magnet from './Magnet';
 
 const navLinks = [
   { label: '关于', href: '#about' },
@@ -30,7 +31,7 @@ export default function HeroSection() {
         </div>
       </FadeIn>
 
-      {/* ── Gradient orbs (subtle) ── */}
+      {/* ── Gradient orbs ── */}
       <div className="absolute top-[15%] -left-[10%] w-[45%] h-[35%] rounded-full
         bg-[#8B5CF6]/5 blur-[120px] animate-pulse pointer-events-none"
         style={{ animationDuration: '6s', animationTimingFunction: 'ease-in-out' }}
@@ -40,9 +41,29 @@ export default function HeroSection() {
         style={{ animationDuration: '8s', animationTimingFunction: 'ease-in-out' }}
       />
 
-      {/* ── Main content area ── */}
-      <div className="flex-1 flex flex-col justify-center relative z-10 overflow-hidden">
-        {/* Heading */}
+      {/* ── Centered portrait with Magnet effect ── */}
+      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+        <FadeIn delay={0.6} y={30} as="div">
+          <Magnet padding={120} strength={4} className="pointer-events-auto">
+            <div className="relative">
+              {/* Glow ring */}
+              <div className="absolute -inset-4 rounded-full
+                bg-gradient-to-br from-[#8B5CF6]/10 to-[#EC4899]/10 blur-2xl"
+              />
+              <img
+                src="https://shrug-person-78902957.figma.site/_components/v2/d24c01ad3a56fc65e942a1f501eb73db42d7cf9a/Rectangle_40443.81459862.png"
+                alt="IP Character"
+                className="relative w-[200px] sm:w-[260px] md:w-[320px] lg:w-[380px]
+                  h-auto object-contain select-none"
+                draggable={false}
+              />
+            </div>
+          </Magnet>
+        </FadeIn>
+      </div>
+
+      {/* ── Heading ── */}
+      <div className="flex-1 flex flex-col justify-center relative z-20 overflow-hidden">
         <FadeIn delay={0.15} y={40}>
           <div className="overflow-hidden w-full">
             <h1
@@ -59,8 +80,7 @@ export default function HeroSection() {
       </div>
 
       {/* ── Bottom bar ── */}
-      <div className="relative z-10 flex justify-between items-end pb-7 sm:pb-8 md:pb-10 px-6 md:px-10">
-        {/* Left: description */}
+      <div className="relative z-20 flex justify-between items-end pb-7 sm:pb-8 md:pb-10 px-6 md:px-10">
         <FadeIn delay={0.35} y={20} as="div">
           <p
             className="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug"
@@ -73,7 +93,6 @@ export default function HeroSection() {
           </p>
         </FadeIn>
 
-        {/* Right: CTA */}
         <FadeIn delay={0.5} y={20} as="div">
           <a
             href="#projects"
@@ -84,7 +103,9 @@ export default function HeroSection() {
               bg-white text-[#0C0C0C]"
           >
             <span>查看作品</span>
-            <ArrowRight size={16} strokeWidth={2} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            <ArrowRight size={16} strokeWidth={2}
+              className="transition-transform duration-300 group-hover:translate-x-0.5"
+            />
           </a>
         </FadeIn>
       </div>
