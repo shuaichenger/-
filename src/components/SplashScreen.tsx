@@ -9,7 +9,7 @@ export default function SplashScreen() {
   useEffect(() => {
     const t1 = setTimeout(() => setShowText(true), 200);
     const t2 = setTimeout(() => setShowSub(true), 900);
-    const t3 = setTimeout(() => setPhase('exit'), 3100);
+    const t3 = setTimeout(() => setPhase('exit'), 1500);
 
     return () => {
       clearTimeout(t1);
