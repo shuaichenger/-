@@ -1,3 +1,4 @@
+import SplashScreen from './components/SplashScreen';
 import HeroSection from './components/HeroSection';
 import MarqueeSection from './components/MarqueeSection';
 import AboutSection from './components/AboutSection';
@@ -6,7 +7,9 @@ import ProjectsSection from './components/ProjectsSection';
 
 export default function App() {
   return (
-    <main className="main-wrapper font-kanit">
+    <div className="relative">
+      <SplashScreen />
+      <main className="main-wrapper font-kanit">
       <HeroSection />
       <MarqueeSection />
       <AboutSection />
@@ -38,5 +41,6 @@ export default function App() {
         </p>
       </footer>
     </main>
+    </div>
   );
 }

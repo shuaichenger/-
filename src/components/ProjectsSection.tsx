@@ -109,10 +109,7 @@ export default function ProjectsSection() {
                   bg-[#0C0C0C] overflow-hidden cursor-pointer
                   transition-all duration-300
                   hover:-translate-y-1 hover:shadow-lg hover:shadow-white/5"
-                style={{
-                  ['--accent' as string]: proj.accent,
-                  borderColor: 'rgba(215, 226, 234, 0.2)',
-                }}
+                style={{ borderColor: 'rgba(215, 226, 234, 0.2)' }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = proj.accent + '80';
                 }}
