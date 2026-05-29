@@ -62,12 +62,6 @@ const navLinks = [
   { label: '联系', href: '#contact' },
 ];
 
-const floatingTags = [
-  { icon: '✦', label: 'AIGC 视觉', color: '#8B5CF6', x: 60, y: -40 },
-  { icon: '◆', label: '品牌全案', color: '#EC4899', x: 80, y: 20 },
-  { icon: '◈', label: '动态设计', color: '#F59E0B', x: 40, y: 70 },
-];
-
 const nameChars = [
   { char: '成', color: '#8B5CF6' },
   { char: '城', color: '#EC4899' },
@@ -141,27 +135,6 @@ export default function HeroSection() {
               </div>
             </FadeIn>
 
-            {/* Floating tags */}
-            {floatingTags.map((tag, i) => (
-              <FadeIn key={tag.label} delay={0.7 + i * 0.15} x={tag.x} y={tag.y}>
-                <div
-                  className="absolute hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full
-                    bg-white/5 backdrop-blur-md border border-white/10
-                    text-xs whitespace-nowrap shadow-lg
-                    animate-float"
-                  style={{
-                    color: tag.color,
-                    top: `${50 + tag.y}%`,
-                    left: `${tag.x > 0 ? 105 : -25}%`,
-                    animationDelay: `${i * 0.4}s`,
-                    animationDuration: '3s',
-                  }}
-                >
-                  <span className="text-sm">{tag.icon}</span>
-                  <span className="font-medium tracking-wide">{tag.label}</span>
-                </div>
-              </FadeIn>
-            ))}
           </div>
 
           {/* Text block */}
