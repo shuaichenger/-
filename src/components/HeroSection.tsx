@@ -26,55 +26,25 @@ export default function HeroSection() {
     <section className="relative h-screen p-3 sm:p-4 md:p-6 bg-black overflow-hidden">
       {/* Inset container */}
       <div className="relative w-full h-full rounded-2xl md:rounded-[2rem] overflow-hidden">
-        {/* ── Background gradient orbs ── */}
-        <div className="absolute inset-0 overflow-hidden">
-          {/* Orb 1 — purple */}
-          <div
-            className="absolute w-[60vw] h-[60vw] md:w-[45vw] md:h-[45vw]
-              rounded-full opacity-20 pointer-events-none animate-pulse"
-            style={{
-              background: 'radial-gradient(circle, #8B5CF6 0%, transparent 70%)',
-              top: '-15%',
-              left: '-10%',
-              animationDuration: '8s',
-            }}
-          />
-          {/* Orb 2 — pink */}
-          <div
-            className="absolute w-[55vw] h-[55vw] md:w-[40vw] md:h-[40vw]
-              rounded-full opacity-15 pointer-events-none animate-pulse"
-            style={{
-              background: 'radial-gradient(circle, #EC4899 0%, transparent 70%)',
-              bottom: '-10%',
-              right: '-5%',
-              animationDuration: '10s',
-              animationDelay: '1s',
-            }}
-          />
-          {/* Orb 3 — orange */}
-          <div
-            className="absolute w-[40vw] h-[40vw] md:w-[30vw] md:h-[30vw]
-              rounded-full opacity-10 pointer-events-none animate-pulse"
-            style={{
-              background: 'radial-gradient(circle, #F97316 0%, transparent 70%)',
-              top: '40%',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              animationDuration: '12s',
-              animationDelay: '2s',
-            }}
-          />
-          {/* Subtle grain texture */}
-          <div
-            className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
-            }}
+        {/* ── Background image ── */}
+        <div className="absolute inset-0">
+          <img
+            src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055344_5eff02e0-87a5-41ce-b64f-eb08da8f33db.png&w=1280&q=85"
+            alt=""
+            className="w-full h-full object-cover scale-105 animate-[slowZoom_20s_ease-in-out_infinite_alternate]"
           />
         </div>
 
+        {/* ── Noise overlay ── */}
+        <div
+          className="absolute inset-0 opacity-[0.7] mix-blend-overlay pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E")`,
+          }}
+        />
+
         {/* ── Gradient overlay ── */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/70 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80 pointer-events-none" />
 
         {/* ── Navbar pill ── */}
         <nav className="absolute top-0 left-1/2 -translate-x-1/2 z-20">
