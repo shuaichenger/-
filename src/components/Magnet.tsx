@@ -33,7 +33,6 @@ export default function Magnet({
       const distX = e.clientX - centerX;
       const distY = e.clientY - centerY;
 
-      const edge = Math.max(Math.abs(distX), Math.abs(distY));
       const isInside =
         distX > -rect.width / 2 - padding &&
         distX < rect.width / 2 + padding &&

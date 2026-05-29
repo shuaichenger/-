@@ -1,5 +1,4 @@
 import { motion, type Variants } from 'framer-motion';
-import { useMemo } from 'react';
 import type { ReactNode, ElementType } from 'react';
 
 type FadeInProps = {
