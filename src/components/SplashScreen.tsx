@@ -5,26 +5,18 @@ export default function SplashScreen() {
   const [phase, setPhase] = useState<'enter' | 'visible' | 'exit'>('enter');
   const [showText, setShowText] = useState(false);
   const [showSub, setShowSub] = useState(false);
-  const [showHint, setShowHint] = useState(false);
 
   useEffect(() => {
-    // Animation timeline
     const t1 = setTimeout(() => setShowText(true), 200);
     const t2 = setTimeout(() => setShowSub(true), 900);
-    const t3 = setTimeout(() => setShowHint(true), 1600);
-    const t4 = setTimeout(() => setPhase('exit'), 3100);
+    const t3 = setTimeout(() => setPhase('exit'), 3100);
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
-      clearTimeout(t4);
     };
   }, []);
-
-  const handleDone = () => {
-    setPhase('exit');
-  };
 
   return (
     <AnimatePresence mode="wait">
@@ -35,8 +27,7 @@ export default function SplashScreen() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center
-            bg-[#0C0C0C] cursor-pointer select-none"
-          onClick={handleDone}
+            bg-[#0C0C0C] select-none"
         >
           {/* Decorative corner dots */}
           <div className="absolute top-8 left-8 flex gap-2">
@@ -85,26 +76,6 @@ export default function SplashScreen() {
               >
                 高级视觉设计师 · AIGC 创作者
               </motion.p>
-            )}
-          </AnimatePresence>
-
-          {/* Enter hint */}
-          <AnimatePresence>
-            {showHint && (
-              <motion.div
-                initial={{ y: 15, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute bottom-12 sm:bottom-16"
-              >
-                <motion.span
-                  animate={{ opacity: [0.3, 0.8, 0.3] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                  className="text-white/20 text-xs sm:text-sm tracking-[0.25em] uppercase"
-                >
-                  点击进入
-                </motion.span>
-              </motion.div>
             )}
           </AnimatePresence>
 
