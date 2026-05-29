@@ -38,7 +38,7 @@ export default function HeroSection() {
               text-[10vw] sm:text-[11vw] md:text-[12vw] lg:text-[13vw]
               tracking-[0.02em]
             ">
-              你好 我是昭成
+              你好 我是成城野
             </h1>
             <span className="absolute -bottom-6 left-1/2 -translate-x-1/2">
               <span className="inline-block w-1 h-1 rounded-full bg-[#D7E2EA]/40 mx-1" />
@@ -79,7 +79,7 @@ export default function HeroSection() {
         >
           <img
             src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055344_5eff02e0-87a5-41ce-b64f-eb08da8f33db.png&w=1280&q=85"
-            alt="昭成头像"
+            alt="成城野头像"
             className="w-full h-auto object-contain"
           />
         </Magnet>

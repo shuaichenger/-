@@ -34,7 +34,7 @@ export default function App() {
         </div>
 
         <p className="text-[#D7E2EA]/40 text-sm">
-          &copy; {new Date().getFullYear()} 罗昭成 版权所有
+          &copy; {new Date().getFullYear()} 成城野 版权所有
         </p>
       </footer>
     </main>
