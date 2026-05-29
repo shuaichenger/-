@@ -61,7 +61,7 @@ export default function ProjectsSection() {
         </h2>
 
         {/* 3-column grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 max-w-[1400px] mx-auto">
           {projects.map((proj, idx) => (
             <FadeIn key={proj.num} delay={idx * 0.1} y={40}>
               <motion.div
@@ -72,7 +72,7 @@ export default function ProjectsSection() {
                 onClick={() => setActiveProject(proj)}
               >
                 {/* Thumbnail */}
-                <div className="aspect-[4/3] overflow-hidden">
+                <div className="aspect-[3/2] overflow-hidden">
                   <img
                     src={proj.images[0]}
                     alt={proj.name}
@@ -83,31 +83,31 @@ export default function ProjectsSection() {
                 </div>
 
                 {/* Info */}
-                <div className="p-4 sm:p-5">
+                <div className="p-5 sm:p-6 md:p-7">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="font-black text-[#D7E2EA] leading-none text-2xl sm:text-3xl">
+                    <span className="font-black text-[#D7E2EA] leading-none text-3xl sm:text-4xl md:text-5xl">
                       {proj.num}
                     </span>
-                    <span className="text-[#D7E2EA]/40 text-xs sm:text-sm tracking-widest uppercase">
+                    <span className="text-[#D7E2EA]/40 text-xs sm:text-sm md:text-base tracking-widest uppercase">
                       {proj.category === 'Client' ? '客户项目' : '个人项目'}
                     </span>
                   </div>
-                  <h3 className="text-[#D7E2EA] font-medium uppercase text-lg sm:text-xl">
+                  <h3 className="text-[#D7E2EA] font-medium uppercase text-xl sm:text-2xl md:text-3xl mt-1">
                     {proj.name}
                   </h3>
-                  <p className="text-[#D7E2EA]/50 text-xs sm:text-sm mt-2 leading-relaxed line-clamp-2">
+                  <p className="text-[#D7E2EA]/50 text-sm sm:text-base mt-2 leading-relaxed line-clamp-2">
                     {proj.description}
                   </p>
 
                   {/* Button */}
                   <button
                     onClick={(e) => { e.stopPropagation(); setActiveProject(proj); }}
-                    className="mt-4 group/btn inline-flex items-center gap-2
-                      text-[#D7E2EA]/60 text-xs sm:text-sm tracking-widest uppercase
+                    className="mt-5 group/btn inline-flex items-center gap-2
+                      text-[#D7E2EA]/60 text-sm sm:text-base tracking-widest uppercase
                       transition-colors duration-200 hover:text-[#D7E2EA]"
                   >
                     <span>查看详情</span>
-                    <ExternalLink size={14}
+                    <ExternalLink size={16}
                       className="transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
                     />
                   </button>
