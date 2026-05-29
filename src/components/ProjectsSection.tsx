@@ -48,7 +48,7 @@ export default function ProjectsSection() {
         className="hero-heading font-black uppercase text-center mb-16 sm:mb-20 md:mb-28"
         style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
       >
-        Project
+        作品
       </h2>
 
       {projects.map((proj, idx) => {
@@ -79,8 +79,8 @@ export default function ProjectsSection() {
                   {proj.num}
                 </span>
                 <div>
-                  <span className="text-[#D7E2EA]/40 text-sm sm:text-base uppercase tracking-widest">
-                    {proj.category}
+                  <span className="text-[#D7E2EA]/40 text-sm sm:text-base tracking-widest">
+                    {proj.category === 'Client' ? '客户项目' : '个人项目'}
                   </span>
                   <h3 className="text-[#D7E2EA] font-medium uppercase text-xl sm:text-2xl md:text-3xl">
                     {proj.name}

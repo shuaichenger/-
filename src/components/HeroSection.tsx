@@ -10,13 +10,18 @@ export default function HeroSection() {
         <nav className="flex justify-between items-center px-6 md:px-10 pt-6 md:pt-8
           text-[#D7E2EA] font-medium uppercase tracking-wider
           text-sm md:text-lg lg:text-[1.4rem]">
-          {['About', 'Service', 'Projects', 'Contact'].map((link) => (
+          {[
+            { label: '关于', href: '#about' },
+            { label: '服务', href: '#service' },
+            { label: '作品', href: '#projects' },
+            { label: '联系', href: '#contact' },
+          ].map((link) => (
             <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
+              key={link.href}
+              href={link.href}
               className="transition-opacity duration-200 hover:opacity-70"
             >
-              {link}
+              {link.label}
             </a>
           ))}
         </nav>
@@ -28,7 +33,7 @@ export default function HeroSection() {
           <h1 className="hero-heading font-black uppercase tracking-tight leading-none whitespace-nowrap w-full
             text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw]
             mt-6 sm:mt-4 md:-mt-5">
-            Hi, i&apos;m Zhaocheng
+            你好 我是昭成
           </h1>
         </FadeIn>
       </div>
@@ -39,7 +44,7 @@ export default function HeroSection() {
           <p className="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug
             max-w-[160px] sm:max-w-[220px] md:max-w-[260px]"
             style={{ fontSize: 'clamp(0.75rem, 1.4vw, 1.5rem)' }}>
-            visual brand &amp; aigc creator crafting striking, unforgettable experiences
+            视觉品牌 &amp; AIGC 创作者 — 打造令人过目不忘的设计体验
           </p>
         </FadeIn>
 
@@ -63,7 +68,7 @@ export default function HeroSection() {
         >
           <img
             src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055344_5eff02e0-87a5-41ce-b64f-eb08da8f33db.png&w=1280&q=85"
-            alt="Zhaocheng Portrait"
+            alt="昭成头像"
             className="w-full h-auto object-contain"
           />
         </Magnet>

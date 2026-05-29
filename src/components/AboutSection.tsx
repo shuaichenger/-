@@ -44,14 +44,14 @@ export default function AboutSection() {
           className="hero-heading font-black uppercase leading-none tracking-tight text-center"
           style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
         >
-          About me
+          关于我
         </h2>
       </FadeIn>
 
       {/* Animated paragraph */}
       <div className="text-center max-w-[560px]">
         <AnimatedText
-          text="Brand designer with AIGC vision — transforming abstract ideas into striking visual assets. i bridge brand strategy, motion design, and AI-powered workflows to deliver full-cycle creative that stands out. Let&apos;s build something incredible together!"
+          text="品牌设计师出身，用 AIGC 拓宽视觉的边界。从品牌策略到动态设计，从概念到落地，AI 工作流让每一个项目都更快、更准、更出彩。一起搞点不一样的？"
           className="text-[#D7E2EA] font-medium leading-relaxed"
           style={{ fontSize: 'clamp(1rem, 2vw, 1.35rem)' }}
         />

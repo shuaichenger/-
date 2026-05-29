@@ -17,13 +17,13 @@ export default function App() {
           className="hero-heading font-black uppercase mb-4"
           style={{ fontSize: 'clamp(2rem, 8vw, 100px)' }}
         >
-          Let&apos;s work
+          一起搞点
         </p>
         <p className="text-[#D7E2EA] font-light text-lg sm:text-xl mb-8">
           zhaocheng@design.studio
         </p>
         <p className="text-[#D7E2EA]/40 text-sm">
-          &copy; {new Date().getFullYear()} Zhaocheng Luo. All rights reserved.
+          &copy; {new Date().getFullYear()} 罗昭成 版权所有
         </p>
       </footer>
     </main>
