@@ -13,7 +13,7 @@
 html,
 body,
 #root {
-  background: #0C0C0C;
+  background: #060512;
   font-family: 'Kanit', sans-serif;
   min-height: 100vh;
 }
@@ -34,7 +34,92 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Marquee animations */
+/* ── Star twinkle ── */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+/* ── Orbital rings ── */
+@keyframes orbit-spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(-12deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(348deg);
+  }
+}
+
+@keyframes orbit-spin-reverse {
+  0% {
+    transform: translate(-50%, -50%) rotate(8deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(-352deg);
+  }
+}
+
+/* ── Glass panel float ── */
+@keyframes glass-float-1 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(20px, -15px);
+  }
+}
+
+@keyframes glass-float-2 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-15px, 20px);
+  }
+}
+
+@keyframes glass-float-3 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(10px, -10px);
+  }
+}
+
+/* ── Scroll dot ── */
+@keyframes scroll-dot {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 0.8;
+  }
+}
+
+/* ── Float (avatar, for Tailwind extend fallback) ── */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ── Marquee animations ── */
 @keyframes marquee-right {
   0% {
     transform: translateX(0);
@@ -42,32 +127,6 @@ html {
   100% {
     transform: translateX(-50%);
   }
-}
-
-/* ── Hero animations ── */
-@keyframes fade-rise {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-rise {
-  animation: fade-rise 0.8s ease-out forwards;
-}
-
-.animate-fade-rise-delay {
-  animation: fade-rise 0.8s ease-out 0.2s forwards;
-  opacity: 0;
-}
-
-.animate-fade-rise-delay-2 {
-  animation: fade-rise 0.8s ease-out 0.4s forwards;
-  opacity: 0;
 }
 
 @keyframes marquee-left {
