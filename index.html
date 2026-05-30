@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>成城野｜AIGC 视觉设计师</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --purple: #8b5cff;
+      --pink: #ff4fb8;
+      --orange: #ff8a22;
+      --bg-deep: #05040c;
+      --bg-mid: #0b0718;
+      --text-primary: #f7f4ff;
+      --text-secondary: rgba(247, 244, 255, 0.6);
+      --text-tertiary: rgba(247, 244, 255, 0.35);
+      --glass-bg: rgba(255, 255, 255, 0.04);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-hover: rgba(255, 255, 255, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ─── Hero Shell ─── */
+    .hero {
+      position: relative;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      isolation: isolate;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 20%, rgba(139, 92, 255, 0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 85% 40%, rgba(255, 79, 184, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 50% 90%, rgba(255, 138, 34, 0.06) 0%, transparent 50%),
+        linear-gradient(175deg, #05040c 0%, #0b0718 40%, #03030a 100%);
+    }
+
+    /* Grid overlay - very subtle */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      opacity: 0.12;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 0%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 0%, transparent 70%);
+    }
+
+    /* Stars / particles - very sparse and subtle */
+    .stars {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: #fff;
+      animation: twinkle var(--duration, 4s) ease-in-out infinite alternate;
+    }
+
+    /* Blur orbs */
+    .orb {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: -1;
+      animation: orbFloat 12s ease-in-out infinite alternate;
+    }
+    .orb-1 {
+      width: 380px; height: 380px;
+      left: -5%; top: 10%;
+      background: rgba(139, 92, 255, 0.12);
+    }
+    .orb-2 {
+      width: 300px; height: 300px;
+      right: 5%; top: 25%;
+      background: rgba(255, 79, 184, 0.07);
+      animation-delay: -5s;
+    }
+    .orb-3 {
+      width: 250px; height: 250px;
+      left: 40%; bottom: 15%;
+      background: rgba(255, 138, 34, 0.05);
+      animation-delay: -9s;
+    }
+
+    /* ─── Glass Utils ─── */
+    .glass {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .glass-strong {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+    }
+
+    /* ─── Navigation ─── */
+    .nav-blur {
+      background: rgba(5, 4, 12, 0.6);
+      backdrop-filter: blur(32px) saturate(1.2);
+      -webkit-backdrop-filter: blur(32px) saturate(1.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* ─── Avatar Stage ─── */
+    .avatar-stage {
+      position: relative;
+      width: 100%;
+      max-width: 460px;
+      aspect-ratio: 1;
+      margin: 0 auto;
+      animation: avatarFloat 6s ease-in-out infinite;
+      transform-style: preserve-3d;
+    }
+
+    /* Glow ring behind avatar */
+    .avatar-ring {
+      position: absolute;
+      inset: 8%;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, var(--purple), var(--pink), var(--orange), var(--purple));
+      filter: blur(0.5px) drop-shadow(0 0 40px rgba(139, 92, 255, 0.3));
+      opacity: 0.7;
+      animation: ringRotate 20s linear infinite;
+      mask-image: radial-gradient(circle, #000 50%, transparent 72%);
+      -webkit-mask-image: radial-gradient(circle, #000 50%, transparent 72%);
+    }
+
+    /* Outer glowing border ring */
+    .avatar-glow-ring {
+      position: absolute;
+      inset: -4%;
+      border-radius: 50%;
+      border: 1px solid rgba(139, 92, 255, 0.15);
+      animation: ringRotate 25s linear infinite reverse;
+      opacity: 0.5;
+    }
+    .avatar-glow-ring-2 {
+      position: absolute;
+      inset: -8%;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 79, 184, 0.08);
+      animation: ringRotate 35s linear infinite;
+      opacity: 0.35;
+    }
+
+    /* Glass stage panel */
+    .stage-panel {
+      position: absolute;
+      inset: -3% -2% 6%;
+      z-index: 1;
+      border-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: linear-gradient(160deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 60%, transparent 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow:
+        inset 0 0 0 1px rgba(139, 92, 255, 0.06),
+        0 0 40px rgba(139, 92, 255, 0.08),
+        0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Bottom glow bar */
+    .stage-base {
+      position: absolute;
+      z-index: 3;
+      left: 14%;
+      right: 14%;
+      bottom: 4%;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(139,92,255,0.3), rgba(255,79,184,0.25), rgba(255,138,34,0.2), transparent);
+      filter: blur(3px);
+      opacity: 0.7;
+    }
+
+    .avatar-img {
+      position: relative;
+      z-index: 2;
+      width: 82%;
+      height: auto;
+      display: block;
+      margin: 6% auto 0;
+      border-radius: 24px;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+    }
+
+    /* Badges on avatar */
+    .badge-top {
+      position: absolute;
+      top: 6%;
+      left: 8%;
+      z-index: 4;
+      padding: 6px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+    }
+    .badge-bottom {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      padding: 8px 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      white-space: nowrap;
+    }
+
+    /* ─── Title Gradient ─── */
+    .title-gradient {
+      display: inline-block;
+      background: linear-gradient(110deg, #8b5cff 0%, #ff4fb8 45%, #ff8a22 85%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      position: relative;
+    }
+
+    /* Shine sweep */
+    .title-shine {
+      position: relative;
+      display: inline-block;
+    }
+    .title-shine::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg,
+        transparent 0%,
+        rgba(255,255,255,0) 30%,
+        rgba(255,255,255,0.7) 48%,
+        rgba(255,255,255,0) 62%,
+        transparent 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      opacity: 0;
+      transform: translateX(-60%);
+      animation: shineSweep 4s ease-in-out 1s infinite;
+      pointer-events: none;
+    }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+      background: linear-gradient(135deg, var(--purple), var(--pink), var(--orange));
+      background-size: 200% 200%;
+      animation: gradientShift 6s ease-in-out infinite alternate;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, var(--purple), var(--pink), var(--orange));
+      filter: blur(12px);
+      opacity: 0.4;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(255, 79, 184, 0.3), 0 0 60px rgba(139, 92, 255, 0.15);
+    }
+    .btn-primary:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .btn-secondary {
+      position: relative;
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease, border-color 0.3s ease;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ─── Stats ─── */
+    .stats-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .stats-card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* ─── Section Bridge ─── */
+    .section-bridge {
+      position: relative;
+      height: 120px;
+      margin-top: -60px;
+      background: linear-gradient(180deg, transparent 0%, rgba(243, 241, 236, 0.06) 25%, #f3f1ec 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* ─── Scroll Cue ─── */
+    .scroll-cue {
+      position: absolute;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%);
+      width: 22px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+    .scroll-cue:hover { opacity: 0.8; }
+    .scroll-cue::after {
+      content: '';
+      position: absolute;
+      top: 7px;
+      left: 50%;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #fff;
+      transform: translateX(-50%);
+      animation: scrollDot 1.8s ease-in-out infinite;
+    }
+
+    /* ─── Animations ─── */
+    @keyframes avatarFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    @keyframes ringRotate {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes orbFloat {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      100% { transform: translate3d(20px, -24px, 0) scale(1.06); }
+    }
+    @keyframes shineSweep {
+      0%, 55% { opacity: 0; transform: translateX(-60%); }
+      65% { opacity: 0.4; }
+      80%, 100% { opacity: 0; transform: translateX(60%); }
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    @keyframes scrollDot {
+      0% { transform: translate(-50%, 0); opacity: 0; }
+      30% { opacity: 1; }
+      100% { transform: translate(-50%, 13px); opacity: 0; }
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.2; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1.2); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .animate-fade-up {
+      animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      opacity: 0;
+    }
+    .animate-fade-up-d1 { animation-delay: 0.1s; }
+    .animate-fade-up-d2 { animation-delay: 0.2s; }
+    .animate-fade-up-d3 { animation-delay: 0.3s; }
+    .animate-fade-up-d4 { animation-delay: 0.4s; }
+    .animate-fade-in {
+      animation: fadeIn 0.6s ease forwards;
+      opacity: 0;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 1024px) {
+      .hero-content {
+        grid-template-columns: 1fr !important;
+        gap: 40px !important;
+        padding-bottom: 60px !important;
+        padding-top: 40px !important;
+      }
+      .copy-block {
+        text-align: center;
+        max-width: 100% !important;
+        order: -1;
+      }
+      .copy-block p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .cta-row {
+        justify-content: center !important;
+      }
+      .stats-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+      }
+      .avatar-stage {
+        max-width: 380px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero { min-height: auto; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-mobile-cta { display: flex !important; }
+      .hero-title {
+        font-size: clamp(52px, 18vw, 86px) !important;
+        line-height: 0.85 !important;
+      }
+      .hero-subtitle {
+        font-size: clamp(22px, 6vw, 32px) !important;
+      }
+      .avatar-stage {
+        max-width: 320px;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0 !important;
+      }
+      .stat-item {
+        border-right: none !important;
+        border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+        padding: 16px 20px !important;
+        justify-content: center !important;
+      }
+      .stat-item:last-child {
+        border-bottom: none !important;
+      }
+      .cta-row {
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+      .cta-row a {
+        width: 100% !important;
+        justify-content: center !important;
+      }
+      .badge-top { display: none; }
+      .scroll-cue { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .avatar-stage {
+        max-width: 260px;
+      }
+      .badge-bottom {
+        font-size: 11px;
+        padding: 5px 14px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .avatar-stage { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <!-- Background layers -->
+  <div class="hero-grid"></div>
+  <div class="stars" id="stars"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- ─── Navigation ─── -->
+  <nav class="nav-blur fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-center">
+    <div class="flex items-center justify-between w-[min(1200px,calc(100%-40px))]">
+      <a href="#" class="flex items-center gap-2.5 group">
+        <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8b5cff] to-[#ff4fb8] shadow-[0_0_16px_rgba(139,92,255,0.7)] transition-transform duration-300 group-hover:scale-125"></span>
+        <span class="text-lg font-bold tracking-[-0.03em] text-white/90">成城野</span>
+      </a>
+      <div class="nav-links flex items-center gap-10">
+        <a href="#about" class="text-sm font-medium text-white/50 transition-colors duration-200 hover:text-white/90">关于</a>
+        <a href="#works" class="text-sm font-medium text-white/50 transition-colors duration-200 hover:text-white/90">作品</a>
+        <a href="#services" class="text-sm font-medium text-white/50 transition-colors duration-200 hover:text-white/90">服务</a>
+        <a href="#contact" class="text-sm font-medium text-white/50 transition-colors duration-200 hover:text-white/90">联系</a>
+      </div>
+      <a href="#contact"
+         class="nav-cta inline-flex items-center gap-1.5 rounded-full bg-white/8 border border-white/10 px-5 py-2 text-sm font-semibold text-white/80 transition-all duration-300 hover:bg-white/14 hover:text-white hover:border-white/20 hover:shadow-[0_0_24px_rgba(255,79,184,0.12)]">
+        开始合作
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="#contact"
+         class="nav-mobile-cta hidden inline-flex items-center gap-1.5 rounded-full bg-white/8 border border-white/10 px-4 py-2 text-sm font-semibold text-white/80 transition-all duration-200">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ─── Hero Content ─── -->
+  <section class="flex-1 flex items-center pt-28 pb-12 lg:pt-32 lg:pb-16">
+    <div class="hero-content mx-auto grid w-[min(1200px,calc(100%-40px))] grid-cols-[0.9fr_1.1fr] items-center gap-16">
+
+      <!-- Left: Avatar -->
+      <div class="animate-fade-up relative">
+        <div class="avatar-stage">
+          <!-- Glow rings -->
+          <div class="avatar-glow-ring-2"></div>
+          <div class="avatar-glow-ring"></div>
+          <div class="avatar-ring"></div>
+          <!-- Stage panel -->
+          <div class="stage-panel"></div>
+          <!-- Avatar image - inline SVG fallback (replace with real photo later) -->
+          <div class="avatar-img" style="display:flex;align-items:center;justify-content:center;">
+            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:24px;">
+              <defs>
+                <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#1a0a3e"/>
+                  <stop offset="100%" stop-color="#0d0b1a"/>
+                </linearGradient>
+                <radialGradient id="rimLight" cx="0.3" cy="0.2" r="0.8">
+                  <stop offset="0%" stop-color="rgba(139,92,255,0.3)"/>
+                  <stop offset="50%" stop-color="transparent"/>
+                  <stop offset="100%" stop-color="rgba(255,79,184,0.1)"/>
+                </radialGradient>
+              </defs>
+              <!-- Background -->
+              <rect width="400" height="400" rx="24" fill="url(#bgGrad)"/>
+              <rect width="400" height="400" rx="24" fill="url(#rimLight)"/>
+              <!-- Shoulders / body -->
+              <path d="M120 400 Q140 320 200 310 Q260 320 280 400 Z" fill="#1a1a2e" opacity="0.8"/>
+              <!-- Neck -->
+              <rect x="185" y="280" width="30" height="30" rx="8" fill="#2d1b4e"/>
+              <!-- Head -->
+              <ellipse cx="200" cy="210" rx="68" ry="78" fill="#2d1b4e"/>
+              <!-- Hair -->
+              <path d="M132 180 Q140 130 170 118 Q200 108 230 118 Q260 130 268 180 Q250 140 200 135 Q150 140 132 180 Z" fill="#e8a0c0" opacity="0.85"/>
+              <path d="M160 122 Q180 115 200 112 Q240 112 240 145 Q230 120 200 118 Q175 118 160 122 Z" fill="#d080a0"/>
+              <!-- Eyes -->
+              <ellipse cx="180" cy="208" rx="12" ry="10" fill="#1a0a2e"/>
+              <ellipse cx="220" cy="208" rx="12" ry="10" fill="#1a0a2e"/>
+              <circle cx="183" cy="205" r="5" fill="#fff" opacity="0.7"/>
+              <circle cx="223" cy="205" r="5" fill="#fff" opacity="0.7"/>
+              <circle cx="176" cy="204" r="2.5" fill="#fff" opacity="0.4"/>
+              <circle cx="216" cy="204" r="2.5" fill="#fff" opacity="0.4"/>
+              <!-- Eyebrows -->
+              <path d="M168 195 Q180 190 192 194" stroke="#1a0a2e" stroke-width="2" fill="none" opacity="0.5"/>
+              <path d="M208 194 Q220 190 232 195" stroke="#1a0a2e" stroke-width="2" fill="none" opacity="0.5"/>
+              <!-- Nose -->
+              <path d="M200 218 L203 228 L197 228 Z" fill="#3d2a5e" opacity="0.4"/>
+              <!-- Smile -->
+              <path d="M182 240 Q190 252 200 254 Q210 252 218 240" stroke="#e8a0c0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <!-- Glasses rim light -->
+              <ellipse cx="180" cy="208" rx="15" ry="12" stroke="rgba(139,92,255,0.3)" stroke-width="1" fill="none"/>
+              <ellipse cx="220" cy="208" rx="15" ry="12" stroke="rgba(255,79,184,0.3)" stroke-width="1" fill="none"/>
+              <line x1="195" y1="208" x2="205" y2="208" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+              <!-- Purple rim light on left side -->
+              <path d="M140 170 Q135 210 142 250" stroke="rgba(139,92,255,0.25)" stroke-width="2" fill="none"/>
+              <!-- Pink accent right rim -->
+              <path d="M258 170 Q263 210 256 250" stroke="rgba(255,79,184,0.2)" stroke-width="2" fill="none"/>
+              <!-- Collar -->
+              <path d="M185 290 L200 270 L215 290" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <div class="stage-base"></div>
+          <!-- Badges -->
+          <div class="badge-top">✦ AIGC Visual Designer</div>
+          <div class="badge-bottom">✧ 高级视觉设计师</div>
+        </div>
+      </div>
+
+      <!-- Right: Copy -->
+      <div class="copy-block max-w-[580px]">
+        <!-- Tag -->
+        <div class="animate-fade-up animate-fade-up-d1 inline-flex items-center gap-2 rounded-full border border-white/8 bg-white/[0.035] px-4 py-2 text-xs font-semibold tracking-[0.12em] text-white/50 uppercase backdrop-blur-xl mb-6">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#b58cff] animate-pulse"></span>
+          AIGC Visual Designer
+        </div>
+
+        <!-- Title -->
+        <h1 class="title-shine hero-title text-[clamp(72px,9vw,130px)] font-black leading-[0.85] tracking-[-0.08em] mb-4"
+            data-text="成城野">
+          <span class="title-gradient">成城野</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="hero-subtitle text-[clamp(26px,3.2vw,42px)] font-bold leading-tight tracking-[-0.04em] text-white/80 mb-4">
+          用 AIGC 拓宽视觉边界
+        </p>
+
+        <!-- Description -->
+        <p class="text-base leading-relaxed text-white/45 max-w-[520px] lg:text-lg lg:leading-8">
+          为品牌提供从视觉概念、AI 生成到落地设计的一站式创意服务，
+          <br class="hidden lg:block">
+          让视觉更快、更准、更出彩。
+        </p>
+
+        <!-- CTAs -->
+        <div class="cta-row mt-10 flex items-center gap-4">
+          <a href="#works"
+             class="btn-primary inline-flex items-center gap-2.5 rounded-full px-8 py-3.5 text-base font-bold text-white transition-all duration-300">
+            查看作品
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#contact"
+             class="btn-secondary inline-flex items-center gap-2.5 rounded-full px-8 py-3.5 text-base font-bold text-white/70 transition-all duration-300">
+            开始合作
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/30"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Stats Bar ─── -->
+  <section class="mx-auto w-[min(1060px,calc(100%-40px))] pb-16 lg:pb-20">
+    <div class="stats-grid glass-strong grid grid-cols-3 overflow-hidden rounded-2xl animate-fade-up animate-fade-up-d3">
+      <div class="stat-item flex items-center gap-4 border-r border-white/6 px-8 py-5">
+        <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/6">
+          <span class="text-lg text-[#b58cff] font-light">✦</span>
+        </div>
+        <div>
+          <div class="text-3xl font-black tracking-[-0.04em] bg-gradient-to-r from-[#8b5cff] to-[#ff4fb8] bg-clip-text text-transparent">3年</div>
+          <div class="mt-0.5 text-sm text-white/40">设计经验</div>
+        </div>
+      </div>
+      <div class="stat-item flex items-center gap-4 border-r border-white/6 px-8 py-5">
+        <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/6">
+          <span class="text-lg text-[#ff4fb8] font-light">◇</span>
+        </div>
+        <div>
+          <div class="text-3xl font-black tracking-[-0.04em] bg-gradient-to-r from-[#ff4fb8] to-[#ff8a22] bg-clip-text text-transparent">100+</div>
+          <div class="mt-0.5 text-sm text-white/40">项目经验</div>
+        </div>
+      </div>
+      <div class="stat-item flex items-center gap-4 px-8 py-5">
+        <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/6">
+          <span class="text-lg text-[#ff8a22] font-light">●</span>
+        </div>
+        <div>
+          <div class="text-3xl font-black tracking-[-0.04em] bg-gradient-to-r from-[#ff8a22] to-[#ffd166] bg-clip-text text-transparent">30+</div>
+          <div class="mt-0.5 text-sm text-white/40">合作客户</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scroll cue -->
+  <a href="#works" class="scroll-cue" aria-label="滚动到作品区"></a>
+</div>
+
+<!-- ─── Section Bridge → Light background ─── -->
+<div class="section-bridge"></div>
+
+<!-- ─── Works Section ─── -->
+<main id="works" class="min-h-screen bg-[#f3f1ec] px-6 pb-32 pt-28 text-[#111]">
+  <section class="mx-auto max-w-[1200px]">
+    <div class="mb-14 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="mb-3 text-sm font-bold uppercase tracking-[0.24em] text-black/30">Selected Works</p>
+        <h2 class="text-[clamp(56px,7vw,110px)] font-black leading-none tracking-[-0.08em]">作品</h2>
+      </div>
+      <p class="max-w-[420px] text-base leading-7 text-black/45 lg:text-lg">
+        每一个项目都是一次视觉探索。从品牌视觉到 AI 创意，构建有温度的设计叙事。
+      </p>
+    </div>
+
+    <!-- Placeholder for works grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="aspect-[4/5] rounded-2xl bg-black/[0.03] border border-black/[0.04] flex items-center justify-center text-black/20 text-sm">
+        作品展示区域
+      </div>
+      <div class="aspect-[4/5] rounded-2xl bg-black/[0.03] border border-black/[0.04] flex items-center justify-center text-black/20 text-sm">
+        作品展示区域
+      </div>
+      <div class="aspect-[4/5] rounded-2xl bg-black/[0.03] border border-black/[0.04] flex items-center justify-center text-black/20 text-sm">
+        作品展示区域
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  // ─── Generate stars ───
+  (function() {
+    const container = document.getElementById('stars');
+    const count = 60;
+    for (let i = 0; i < count; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.setProperty('--duration', (2 + Math.random() * 4) + 's');
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.opacity = 0.2 + Math.random() * 0.5;
+      const size = 1 + Math.random() * 1.5;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      container.appendChild(star);
+    }
+  })();
+</script>
+
+</body>
+</html>
